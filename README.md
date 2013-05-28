@@ -11,6 +11,8 @@ To define which pages are crawled and extract data, use `spider.on()` with a str
 
 Each page will only be crawled once. If muliple regular expressions match the uri, they will all be called.
 
+** Page URLs which do not match an `on` condition will never be crawled **
+
 ### Install
 
 ```bash
