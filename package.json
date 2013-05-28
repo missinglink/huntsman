@@ -1,0 +1,22 @@
+{
+  "name": "huntsman",
+  "preferGlobal": true,
+  "private": false,
+  "version": "0.0.1",
+  "description": "Super simple web spider",
+  "contributors": [],
+  "dependencies": {
+    "request": "~2.21.0",
+    "cheerio": "~0.11.0",
+    "coffee-script": "~1.6.2"
+  },
+  "readme": "# Super simple web spider",
+  "engines": {
+    "node": ">0.6.0",
+    "npm": ">1.1.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/missinglink/huntsman.git"
+  }
+}
