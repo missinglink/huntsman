@@ -45,6 +45,4 @@ Percy Fender (1892–1985) was an English cricketer who played 13 Tests and cap
  -> http://en.wikipedia.org/wiki/Wikipedia:General_disclaimer
 Wikipedia:General disclaimer
 Wikipedia is an online open-content collaborative encyclopedia; that is, a voluntary association of individuals and groups working to develop a common resource of human knowledge. The structure of the project allows anyone with an Internet connection to alter its content. Please be advised that nothing found here has necessarily been reviewed by people with the expertise required to provide you with complete, accurate or reliable information.
-
-
 ```
