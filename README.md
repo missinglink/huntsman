@@ -3,7 +3,7 @@
 
 ## A super simple web spider
 
-Huntsman take one or more 'seed' urls with the `spider.add()` method.
+Huntsman takes one or more 'seed' urls with the `spider.add()` method.
 
 Once the process is kicked off with `spider.start()`, it will take care of extracting links from the page and following only the pages we want.
 
@@ -11,9 +11,13 @@ To define which pages are crawled and extract data, use `spider.on()` with a str
 
 Each page will only be crawled once. If muliple regular expressions match the uri, they will all be called.
 
+### Install
+
 ```bash
 npm install huntsman --save
 ```
+
+### Example
 
 ```javascript
 var Huntsman = require('huntsman');
