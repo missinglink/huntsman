@@ -7,8 +7,16 @@
   "contributors": [],
   "dependencies": {
     "request": "~2.21.0",
-    "cheerio": "~0.11.0",
-    "coffee-script": "~1.6.2"
+    "cheerio": "~0.11.0"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --recursive --reporter spec --compilers coffee:coffee-script test"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "coffee-script": "*",
+    "breakdown": "*"
   },
   "readme": "# Super simple web spider",
   "engines": {
