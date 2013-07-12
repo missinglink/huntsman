@@ -5,6 +5,17 @@ should = require 'should'
 
 describe 'normaliser', ->
 
+  describe 'validation', ->
+
+    it 'should throw if uri is invalid', ->
+
+      (-> link.normaliser( '' ) ).should.throw 'invalid uri';
+      (-> link.normaliser( null ) ).should.throw 'invalid uri';
+      (-> link.normaliser( undefined ) ).should.throw 'invalid uri';
+      (-> link.normaliser( {} ) ).should.throw 'invalid uri';
+      (-> link.normaliser( [] ) ).should.throw 'invalid uri';
+      (-> link.normaliser( 'a' ) ).should.not.throw();
+
   describe 'transformations', ->
 
     it 'should remove trailing slashes', ->
@@ -17,23 +28,36 @@ describe 'normaliser', ->
       link.normaliser( 'http://a.com/foo/?bing=bang#moo' ).should.eql 'http://a.com/foo?bing=bang#moo'
       link.normaliser( 'http://a.com/foo/bar/' ).should.eql 'http://a.com/foo/bar'
 
+describe 'resolver', ->
+
+  describe 'validation', ->
+
+    it 'should throw if uri is invalid', ->
+
+      (-> link.resolver( '' ) ).should.throw 'invalid uri';
+      (-> link.resolver( null ) ).should.throw 'invalid uri';
+      (-> link.resolver( undefined ) ).should.throw 'invalid uri';
+      (-> link.resolver( {} ) ).should.throw 'invalid uri';
+      (-> link.resolver( [] ) ).should.throw 'invalid uri';
+      (-> link.resolver( 'a' ) ).should.not.throw();
+
   describe 'absolute / relative urls', ->
 
     it 'should not convert relative url to absolute urls if base url not provided', ->
 
-      link.normaliser( '/1.html' ).should.eql '/1.html'
+      link.resolver( '/1.html' ).should.eql '/1.html'
 
     it 'should not convert absolute urls if base url not provided', ->
 
-      link.normaliser( 'http://www.example.com/1.html' ).should.eql 'http://www.example.com/1.html'
+      link.resolver( 'http://www.example.com/1.html' ).should.eql 'http://www.example.com/1.html'
 
     it 'should convert relative url to absolute urls when base url is provided', ->
 
-      link.normaliser( '/1.html', 'http://example.com/' ).should.eql 'http://example.com/1.html'
+      link.resolver( '/1.html', 'http://example.com/' ).should.eql 'http://example.com/1.html'
 
     it 'should not convert domains for absolute urls when a base url is provided', ->
 
-      link.normaliser( 'http://example.com/1.html', 'http://foo.com/' ).should.eql 'http://example.com/1.html'
+      link.resolver( 'http://example.com/1.html', 'http://foo.com/' ).should.eql 'http://example.com/1.html'
 
 describe 'extractor', ->
 
@@ -114,3 +138,21 @@ describe 'extractor', ->
         unique: true
       })
       .should.eql [ 'http://a.com/1.html' ]
+
+  describe 'custom link resolver', ->
+
+    it 'should be able to override resolver', ->
+
+      link.extractor( 'http://a.com', '<a href="1.html">1</a>', {
+        resolver: ( url, baseUri ) -> return url # just return the url without modification
+      })
+      .should.eql [ '1.html' ]
+
+  describe 'custom link normaliser', ->
+
+    it 'should be able to override normaliser', ->
+
+      link.extractor( 'http://a.com', '<a href="1.html">1</a>', {
+        normaliser: ( url ) -> return url.replace /\.\w*$/, '' # remove file extension
+      })
+      .should.eql [ 'http://a.com/1' ]
