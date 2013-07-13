@@ -1,6 +1,8 @@
 
 # Huntsman
 
+[![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
+
 ## A super simple web spider
 
 Huntsman takes one or more 'seed' urls with the `spider.queue.add()` method.
@@ -53,5 +55,3 @@ peter@edgy:/tmp$ node example.js
 
 ... etc
 ```
-
-[![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
