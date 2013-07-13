@@ -1,15 +1,21 @@
 
-var Huntsman = require('./index');
-var spider = new Huntsman();
+var huntsman = require('./index');
+var spider = huntsman.spider();
 
-spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/([^\/]*)/, function ( res, $, body ){
+spider.extensions = [
+  huntsman.extension( 'stats' ),
+  huntsman.extension( 'recurse' ),
+  huntsman.extension( 'cheerio' )
+];
 
-  console.log( ' -> ' + res.url );
-  console.log( $('h1.firstHeading').text().trim() );
-  console.log( $('div#mw-content-text p').first().text().trim() );
-  console.log();
+spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res, body, $ ){
+
+  // console.log( ' -> ' + res.uri );
+  // console.log( $('h1.firstHeading').text().trim() );
+  // console.log( $('div#mw-content-text p').first().text().trim() );
+  // console.log();
 
 });
 
-spider.add( 'http://en.wikipedia.org/wiki/Main_Page' );
+spider.queue.add( 'http://en.wikipedia.org/wiki/Main_Page' );
 spider.start();

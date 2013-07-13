@@ -54,10 +54,16 @@ describe 'resolver', ->
     it 'should convert relative url to absolute urls when base url is provided', ->
 
       link.resolver( '/1.html', 'http://example.com/' ).should.eql 'http://example.com/1.html'
+      link.resolver( '1.html', 'http://example.com/a' ).should.eql 'http://example.com/1.html'
+      link.resolver( '1.html', 'http://example.com/a/' ).should.eql 'http://example.com/a/1.html'
 
     it 'should not convert domains for absolute urls when a base url is provided', ->
 
       link.resolver( 'http://example.com/1.html', 'http://foo.com/' ).should.eql 'http://example.com/1.html'
+
+    it 'should resolve parent directory references', ->
+
+      link.resolver( '../2.html', 'http://example.com/a/1.html' ).should.eql 'http://example.com/2.html'
 
 describe 'extractor', ->
 
