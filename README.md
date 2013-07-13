@@ -3,7 +3,7 @@
 
 ## A super simple web spider
 
-Huntsman takes one or more 'seed' urls with the `spider.add()` method.
+Huntsman takes one or more 'seed' urls with the `spider.queue.add()` method.
 
 Once the process is kicked off with `spider.start()`, it will take care of extracting links from the page and following only the pages we want.
 
@@ -22,29 +22,34 @@ npm install huntsman --save
 ### Example
 
 ```javascript
-var Huntsman = require('huntsman');
-var spider = new Huntsman();
+var huntsman = require('./index');
+var spider = huntsman.spider();
 
-spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/([^\/]*)/, function ( res, $, body ){
+spider.extensions = [
+  huntsman.extension( 'stats' ),
+  huntsman.extension( 'recurse' ),
+  huntsman.extension( 'cheerio' )
+];
 
-  console.log( res.url );
-  console.log( $('h1.firstHeading').text().trim() );
-  console.log( $('div#mw-content-text p').first().text().trim() );
-
+spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res, body, $ ){
+  console.log({
+    uri: res.uri,
+    heading: $('h1.firstHeading').text().trim(),
+    body: $('div#mw-content-text p').text().trim()
+  });
 });
 
-spider.add( 'http://en.wikipedia.org/wiki/Main_Page' );
+spider.queue.add( 'http://en.wikipedia.org/wiki/Main_Page' );
 spider.start();
 ```
 
 ```bash
 peter@edgy:/tmp$ node example.js 
+{
+  "uri": "http://en.wikipedia.org/wiki/Wikipedia:Recent_additions",
+  "heading": "Wikipedia:Recent additions",
+  "body": "This is a selection of recently created new articles and greatly expanded former stub articles on Wikipedia that were featured on the Main Page as part of Did you know? You can submit new pages for consideration. (Archives are grouped by month of Main page appearance.)Tip: To find which archive contains the fact that appeared on Did You Know?, return to the article and click \"What links here\" to the left of the article. Then, in the dropdown menu provided for namespace, choose Wikipedia and click \"Go\". When you find \"Wikipedia:Recent additions\" and a number, click it and search for the article name.\n\nCurrent archive"
+}
 
- -> http://en.wikipedia.org/wiki/Main_Page
-Main Page
-Percy Fender (1892–1985) was an English cricketer who played 13 Tests and captained Surrey between 1921 and 1931. An all-rounder, he was a belligerent middle-order batsman who bowled mainly leg spin and completed the cricketer's double seven times. In 1914, he was named one of Wisden's Cricketers of the Year, and in 1920 hit the fastest recorded first-class century, reaching three figures in 35 minutes (which remains a record in 2013). In county cricket, he was an effective performer with bat and ball, and a forceful though occasionally controversial leader; contemporaries judged him the best captain in England. From 1921, he played occasionally in Tests for England but was never particularly successful. Despite press promptings, he was never appointed Test captain, and his England career was effectively ended by a clash with the influential Lord Harris in 1924. Further disagreements with the Surrey committee over his approach and tactics led to his replacement as county captain in 1932 and the end of his career in 1935. Cartoonists enjoyed caricaturing his distinctive appearance, but he was also well known outside cricket for his presence in society. (Full article...)
-
- -> http://en.wikipedia.org/wiki/Wikipedia:General_disclaimer
-Wikipedia:General disclaimer
-Wikipedia is an online open-content collaborative encyclopedia; that is, a voluntary association of individuals and groups working to develop a common resource of human knowledge. The structure of the project allows anyone with an Internet connection to alter its content. Please be advised that nothing found here has necessarily been reviewed by people with the expertise required to provide you with complete, accurate or reliable information.
+... etc
 ```

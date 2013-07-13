@@ -9,12 +9,11 @@ spider.extensions = [
 ];
 
 spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res, body, $ ){
-
-  // console.log( ' -> ' + res.uri );
-  // console.log( $('h1.firstHeading').text().trim() );
-  // console.log( $('div#mw-content-text p').first().text().trim() );
-  // console.log();
-
+  console.log({
+    uri: res.uri,
+    heading: $('h1.firstHeading').text().trim(),
+    body: $('div#mw-content-text p').text().trim()
+  });
 });
 
 spider.queue.add( 'http://en.wikipedia.org/wiki/Main_Page' );
