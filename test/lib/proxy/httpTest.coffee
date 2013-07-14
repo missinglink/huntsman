@@ -3,7 +3,7 @@ proxy = require( '../../../lib/proxy/http' );
 breakdown = require 'breakdown'
 should = require 'should'
 
-describe 'http proxy', ->
+describe.skip 'http proxy', ->
 
   it 'should use npm request to fetch uris', (done) ->
 
