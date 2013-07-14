@@ -5,11 +5,38 @@ should = require 'should'
 
 describe 'RegexEventEmitter', ->
 
-  it 'class.listeners', ->
+  it 'listeners', ->
 
     emitter = new RegexEventEmitter();
     RegexEventEmitter.listeners( emitter ).should.eql 0
     emitter.listeners().length.should.equal 0
+
+  it 'should add listeners with on()', (done) ->
+
+    emitter = new RegexEventEmitter();
+    emitter.on( 'foo', done );
+    emitter.emit( 'foo' );
+
+  it 'should add listeners with once()', (done) ->
+
+    emitter = new RegexEventEmitter();
+    emitter.once( 'foo', done );
+    emitter.emit( 'foo' );
+    emitter.emit( 'foo' );
+
+  it 'should throw if non string passed to match()', ->
+
+    emitter = new RegexEventEmitter();
+    (-> emitter.match( /bar/ ) ).should.throw 'invalid string'
+
+  it 'should match listeners with match()', ->
+
+    emitter = new RegexEventEmitter();
+    emitter.on( /bingo|bango/ );
+    emitter.once( 'foo' );
+    emitter.match( 'bingo' ).should.eql true;
+    emitter.match( 'foo' ).should.eql true;
+    emitter.match( 'baz' ).should.eql false;
 
   it 'should emit error when hitting max event listeners', (done) ->
 
@@ -123,8 +150,8 @@ describe 'RegexEventEmitter', ->
 
     emitter.on /hello (world|universe)/, testvalues
     emitter.emit 'hello testcase', 'bingo', 'bongo'
-    emitter.emit 'hello universe', 'bingo', 'bongo'
     emitter.emit 'hello world', 'bingo', 'bongo'
+    emitter.emit 'hello universe', 'bingo', 'bongo'
 
   it 'functional #2', (done) ->
 
@@ -153,4 +180,5 @@ describe 'RegexEventEmitter', ->
 
     emitter.once /hello (world|universe)/, testvalues
     emitter.emit 'hello testcase', 'bingo', 'bongo'
+    emitter.emit 'hello world', 'bingo', 'bongo'
     emitter.emit 'hello universe', 'bingo', 'bongo'
