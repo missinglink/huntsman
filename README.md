@@ -24,7 +24,7 @@ npm install huntsman --save
 ### Example
 
 ```javascript
-var huntsman = require('huntsman');
+var huntsman = require('../index');
 var spider = huntsman.spider();
 
 spider.extensions = [

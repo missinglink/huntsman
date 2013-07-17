@@ -1,9 +1,15 @@
 
+function loadModule( mod ){
+  return function(){
+    var args = Array.prototype.slice.call( arguments, 0 );
+    var module = require( './lib/' + mod + '/' + args.shift() );
+    return module.apply( module, args );
+  };
+}
+
 module.exports = {
   spider: require( './lib/huntsman' ),
-  extension: function(){
-    var args = Array.prototype.slice.call( arguments, 0 );
-    var extension = require( './lib/extension/' + args.shift() );
-    return extension.apply( extension, args );
-  }
+  proxy: loadModule( 'proxy' ),
+  extension: loadModule( 'extension' ),
+  storage: loadModule( 'storage' )
 };

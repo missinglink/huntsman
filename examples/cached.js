@@ -1,6 +1,13 @@
 
-var huntsman = require('./index');
-var spider = huntsman.spider();
+// This example is not quite finished yet.
+
+var path = require('path');
+var huntsman = require('../index');
+var filename = path.resolve( './cache.json' );
+
+huntsman.storage( 'filesystem', filename, { writeInterval: 1000 } );
+
+var spider = huntsman.spider(  );
 
 spider.extensions = [
   huntsman.extension( 'stats' ),
