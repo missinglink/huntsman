@@ -21,6 +21,8 @@ Each page will only be crawled once. If muliple regular expressions match the ur
 npm install huntsman --save
 ```
 
+[![NPM](https://nodei.co/npm/huntsman.png)](https://nodei.co/npm/huntsman/)
+
 ### Example
 
 ```javascript
