@@ -30,37 +30,65 @@
 
       </header>
       <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h1>
+<a name="huntsman" class="anchor" href="#huntsman"><span class="octicon octicon-link"></span></a>Huntsman</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><a href="https://travis-ci.org/missinglink/huntsman"><img src="https://travis-ci.org/missinglink/huntsman.png?branch=master" alt="Build Status"></a></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<h2>
+<a name="a-super-simple-web-spider" class="anchor" href="#a-super-simple-web-spider"><span class="octicon octicon-link"></span></a>A super simple web spider</h2>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Huntsman takes one or more 'seed' urls with the <code>spider.queue.add()</code> method.</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>Once the process is kicked off with <code>spider.start()</code>, it will take care of extracting links from the page and following only the pages we want.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>To define which pages are crawled and extract data, use <code>spider.on()</code> with a string or regular expression.</p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>Each page will only be crawled once. If muliple regular expressions match the uri, they will all be called.</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p><strong>Page URLs which do not match an <code>on</code> condition will never be crawled</strong></p>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<div class="highlight"><pre>npm install huntsman --save
+</pre></div>
+
+<p><a href="https://nodei.co/npm/huntsman/"><img src="https://nodei.co/npm/huntsman.png?downloads=true&amp;stars=true" alt="NPM"></a></p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">extensions</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'stats'</span> <span class="p">),</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span> <span class="p">),</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span> <span class="p">)</span>
+<span class="p">];</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="sr">/http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">body</span><span class="p">,</span> <span class="nx">$</span> <span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+    <span class="nx">uri</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span>
+    <span class="nx">heading</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'h1.firstHeading'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="nx">body</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div#mw-content-text p'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">()</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="s1">'http://en.wikipedia.org/wiki/Main_Page'</span> <span class="p">);</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<div class="highlight"><pre>peter@edgy:/tmp<span class="nv">$ </span>node example.js 
+<span class="o">{</span>
+  <span class="s2">"uri"</span>: <span class="s2">"http://en.wikipedia.org/wiki/Wikipedia:Recent_additions"</span>,
+  <span class="s2">"heading"</span>: <span class="s2">"Wikipedia:Recent additions"</span>,
+  <span class="s2">"body"</span>: <span class="s2">"This is a selection of recently created new articles and greatly expanded former stub articles on Wikipedia that were featured on the Main Page as part of Did you know? You can submit new pages for consideration. (Archives are grouped by month of Main page appearance.)Tip: To find which archive contains the fact that appeared on Did You Know?, return to the article and click \"What links here\" to the left of the article. Then, in the dropdown menu provided for namespace, choose Wikipedia and click \"Go\". When you find \"Wikipedia:Recent additions\" and a number, click it and search for the article name.\n\nCurrent archive"</span>
+<span class="o">}</span>
+
+... etc
+</pre></div>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
