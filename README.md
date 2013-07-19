@@ -68,7 +68,7 @@ peter@edgy:/tmp$ node examples/html.js
 ... etc
 ```
 
-More examples are available in the /examples directory
+More examples are available in the [/examples](https://github.com/missinglink/huntsman/tree/master/examples "Title") directory
 
 ## Build Status
 
