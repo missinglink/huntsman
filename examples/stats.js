@@ -1,7 +1,7 @@
 
 /** Crawl wikipedia and log statistics **/
 
-var huntsman = require('../index');
+var huntsman = require('huntsman');
 var spider = huntsman.spider();
 
 spider.extensions = [

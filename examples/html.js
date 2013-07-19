@@ -1,7 +1,7 @@
 
 /** Crawl wikipedia and use jquery syntax to extract information from the page **/
 
-var huntsman = require('../index');
+var huntsman = require('huntsman');
 var spider = huntsman.spider();
 
 spider.extensions = [

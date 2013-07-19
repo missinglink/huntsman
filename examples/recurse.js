@@ -1,7 +1,7 @@
 
 /** Crawl wikipedia and list all pages which match the specified uri **/
 
-var huntsman = require('../index');
+var huntsman = require('huntsman');
 var spider = huntsman.spider();
 
 spider.extensions = [

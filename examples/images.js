@@ -1,7 +1,7 @@
 
 /** Crawl wikipedia and download all images recursively **/
 
-var huntsman = require('../index');
+var huntsman = require('huntsman');
 var spider = huntsman.spider();
 
 spider.extensions = [

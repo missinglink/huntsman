@@ -1,7 +1,7 @@
 
 /** Crawl wikipedia and extract script tags from the response body **/
 
-var huntsman = require('../index');
+var huntsman = require('huntsman');
 var spider = huntsman.spider();
 
 spider.extensions = [

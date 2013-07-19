@@ -1,7 +1,7 @@
 
 /** Most basic example, process queue in order & do not recurse **/
 
-var huntsman = require('../index');
+var huntsman = require('huntsman');
 var spider = huntsman.spider();
 
 // follow pages which match this uri string
