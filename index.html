@@ -31,12 +31,7 @@
       </header>
       <section>
         <h1>
-<a name="huntsman" class="anchor" href="#huntsman"><span class="octicon octicon-link"></span></a>Huntsman</h1>
-
-<p><a href="https://travis-ci.org/missinglink/huntsman"><img src="https://travis-ci.org/missinglink/huntsman.png?branch=master" alt="Build Status"></a></p>
-
-<h2>
-<a name="a-super-simple-web-spider" class="anchor" href="#a-super-simple-web-spider"><span class="octicon octicon-link"></span></a>A super simple web spider</h2>
+<a name="a-super-simple-web-spider" class="anchor" href="#a-super-simple-web-spider"><span class="octicon octicon-link"></span></a>A super simple web spider</h1>
 
 <p>Huntsman takes one or more 'seed' urls with the <code>spider.queue.add()</code> method.</p>
 
@@ -44,7 +39,7 @@
 
 <p>To define which pages are crawled and extract data, use <code>spider.on()</code> with a string or regular expression.</p>
 
-<p>Each page will only be crawled once. If muliple regular expressions match the uri, they will all be called.</p>
+<p>Each page will only be crawled once. If multiple regular expressions match the uri, they will all be called.</p>
 
 <p><strong>Page URLs which do not match an <code>on</code> condition will never be crawled</strong></p>
 
@@ -57,30 +52,43 @@
 <p><a href="https://nodei.co/npm/huntsman/"><img src="https://nodei.co/npm/huntsman.png?downloads=true&amp;stars=true" alt="NPM"></a></p>
 
 <h3>
-<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h3>
+<a name="example-script" class="anchor" href="#example-script"><span class="octicon octicon-link"></span></a>Example Script</h3>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
+<div class="highlight"><pre><span class="cm">/** Crawl wikipedia and use jquery syntax to extract information from the page **/</span>
+
+<span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
 
 <span class="nx">spider</span><span class="p">.</span><span class="nx">extensions</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'stats'</span> <span class="p">),</span>
-  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span> <span class="p">),</span>
-  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span> <span class="p">)</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span> <span class="p">),</span> <span class="c1">// load recurse extension &amp; follow anchor links</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span> <span class="p">)</span> <span class="c1">// load cheerio extension</span>
 <span class="p">];</span>
 
-<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="sr">/http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">body</span><span class="p">,</span> <span class="nx">$</span> <span class="p">){</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span>
+<span class="c1">// follow pages which match this uri regex</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="sr">/http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+
+  <span class="c1">// use jquery-style selectors &amp; functions</span>
+  <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span><span class="p">;</span>
+
+  <span class="c1">// extract information from page body</span>
+  <span class="kd">var</span> <span class="nx">wikipedia</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">uri</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span>
     <span class="nx">heading</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'h1.firstHeading'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">(),</span>
     <span class="nx">body</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div#mw-content-text p'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">()</span>
-  <span class="p">});</span>
+  <span class="p">};</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">wikipedia</span> <span class="p">);</span>
+
 <span class="p">});</span>
 
-<span class="nx">spider</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="s1">'http://en.wikipedia.org/wiki/Main_Page'</span> <span class="p">);</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="s1">'http://en.wikipedia.org/wiki/Huntsman_spider'</span> <span class="p">);</span>
 <span class="nx">spider</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
-<div class="highlight"><pre>peter@edgy:/tmp<span class="nv">$ </span>node example.js 
+<h3>
+<a name="example-output" class="anchor" href="#example-output"><span class="octicon octicon-link"></span></a>Example Output</h3>
+
+<div class="highlight"><pre>peter@edgy:/tmp<span class="nv">$ </span>node examples/html.js 
 <span class="o">{</span>
   <span class="s2">"uri"</span>: <span class="s2">"http://en.wikipedia.org/wiki/Wikipedia:Recent_additions"</span>,
   <span class="s2">"heading"</span>: <span class="s2">"Wikipedia:Recent additions"</span>,
@@ -89,6 +97,13 @@
 
 ... etc
 </pre></div>
+
+<p>More examples are available in the <a href="https://github.com/missinglink/huntsman/tree/master/examples" title="Title">/examples</a> directory</p>
+
+<h2>
+<a name="build-status" class="anchor" href="#build-status"><span class="octicon octicon-link"></span></a>Build Status</h2>
+
+<p><a href="https://travis-ci.org/missinglink/huntsman"><img src="https://travis-ci.org/missinglink/huntsman.png?branch=master" alt="Build Status"></a></p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
