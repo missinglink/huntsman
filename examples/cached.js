@@ -2,7 +2,7 @@
 /** This example is not quite finished yet. **/
 
 // var path = require('path');
-// var huntsman = require('../index');
+// var huntsman = require('huntsman');
 // var filename = path.resolve('./cache.json');
 
 // var spider = huntsman.spider({
