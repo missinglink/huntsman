@@ -14,7 +14,7 @@ spider.extensions = [
   })
 ];
 
-// follow pages which match these uri regex
+// follow pages which match this uri regex
 spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/File/ );
 
 // print mime type and uri for each image found
