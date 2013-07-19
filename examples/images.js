@@ -1,5 +1,5 @@
 
-/** Crawl wikipedia and list all images recursively **/
+/** Crawl wikipedia and download all images recursively **/
 
 var huntsman = require('../index');
 var spider = huntsman.spider();
@@ -14,13 +14,13 @@ spider.extensions = [
   })
 ];
 
-// follow pages which match this uri regex
-spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/ );
+// follow pages which match these uri regex
+spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/File/ );
 
-// print uri for each image found
-spider.on(/\.jpg|\.gif|\.png/, function ( err, res ){
+// print mime type and uri for each image found
+spider.on(/^http:\/\/upload\.wikimedia\.org(.*)(\.jpg|\.gif|\.png)$/, function ( err, res ){
 
-  console.log( res.uri );
+  console.log( res.headers['content-type'], '\t', Math.round( res.body.length / 1024 ) + 'kb', '\t', res.uri );
 
 });
 
