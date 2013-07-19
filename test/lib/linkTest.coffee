@@ -89,7 +89,7 @@ describe 'extractor', ->
 
         link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</a><a href="/2.html">2</a>', {
           pattern: {
-            search: /script\ssrc\s?=\s?['"]([^"']+)/gi, # extract script tags and allow fragement hash
+            search: /script\ssrc\s?=\s?['"]([^"']+)/gi, # extract script tags and allow fragment hash
             refine: /['"]([^"']+)/ # allow fragment hash
           }
         })

@@ -1,27 +1,27 @@
 
-// This example is not quite finished yet.
+/** This example is not quite finished yet. **/
 
-var path = require('path');
-var huntsman = require('../index');
-var filename = path.resolve( './cache.json' );
+// var path = require('path');
+// var huntsman = require('../index');
+// var filename = path.resolve('./cache.json');
 
-huntsman.storage( 'filesystem', filename, { writeInterval: 1000 } );
+// var spider = huntsman.spider({
+//   storage: huntsman.storage( 'filesystem', filename, { writeInterval: 1000 } )
+// });
 
-var spider = huntsman.spider(  );
+// spider.extensions = [
+//   huntsman.extension( 'recurse' ) // load recurse extension & follow anchor links
+// ];
 
-spider.extensions = [
-  huntsman.extension( 'stats' ),
-  huntsman.extension( 'recurse' ),
-  huntsman.extension( 'cheerio' )
-];
+// // follow pages which match this uri string
+// spider.on( 'http://en.wikipedia.org/wiki/', function ( err, res ){
 
-spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res, body, $ ){
-  console.log({
-    uri: res.uri,
-    heading: $('h1.firstHeading').text().trim(),
-    body: $('div#mw-content-text p').text().trim()
-  });
-});
+//   // print http response
+//   console.log( res.statusCode, res.uri );
+//   console.log( res.headers );
+//   console.log( res.body.substr( 0, 150 ) + '..' );
 
-spider.queue.add( 'http://en.wikipedia.org/wiki/Main_Page' );
-spider.start();
+// });
+
+// spider.queue.add( 'http://en.wikipedia.org/wiki/Main_Page' );
+// spider.start();

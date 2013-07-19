@@ -1,8 +1,6 @@
 
 # Huntsman
 
-[![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
-
 ## A super simple web spider
 
 Huntsman takes one or more 'seed' urls with the `spider.queue.add()` method.
@@ -11,7 +9,7 @@ Once the process is kicked off with `spider.start()`, it will take care of extra
 
 To define which pages are crawled and extract data, use `spider.on()` with a string or regular expression.
 
-Each page will only be crawled once. If muliple regular expressions match the uri, they will all be called.
+Each page will only be crawled once. If multiple regular expressions match the uri, they will all be called.
 
 **Page URLs which do not match an `on` condition will never be crawled**
 
@@ -23,32 +21,44 @@ npm install huntsman --save
 
 [![NPM](https://nodei.co/npm/huntsman.png?downloads=true&stars=true)](https://nodei.co/npm/huntsman/)
 
-### Example
+### Example Script
 
 ```javascript
-var huntsman = require('huntsman');
+/** Crawl wikipedia and use jquery syntax to extract information from the page **/
+
+var huntsman = require('../index');
 var spider = huntsman.spider();
 
 spider.extensions = [
-  huntsman.extension( 'stats' ),
-  huntsman.extension( 'recurse' ),
-  huntsman.extension( 'cheerio' )
+  huntsman.extension( 'recurse' ), // load recurse extension & follow anchor links
+  huntsman.extension( 'cheerio' ) // load cheerio extension
 ];
 
-spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res, body, $ ){
-  console.log({
+// follow pages which match this uri regex
+spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res ){
+
+  // use jquery-style selectors & functions
+  var $ = res.extension.cheerio;
+
+  // extract information from page body
+  var wikipedia = {
     uri: res.uri,
     heading: $('h1.firstHeading').text().trim(),
     body: $('div#mw-content-text p').text().trim()
-  });
+  };
+
+  console.log( wikipedia );
+
 });
 
-spider.queue.add( 'http://en.wikipedia.org/wiki/Main_Page' );
+spider.queue.add( 'http://en.wikipedia.org/wiki/Huntsman_spider' );
 spider.start();
 ```
 
+### Example Output
+
 ```bash
-peter@edgy:/tmp$ node example.js 
+peter@edgy:/tmp$ node examples/html.js 
 {
   "uri": "http://en.wikipedia.org/wiki/Wikipedia:Recent_additions",
   "heading": "Wikipedia:Recent additions",
@@ -57,3 +67,9 @@ peter@edgy:/tmp$ node example.js
 
 ... etc
 ```
+
+More examples are available in the /examples directory
+
+## Build Status
+
+[![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
