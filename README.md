@@ -1,7 +1,5 @@
 
-# Huntsman
-
-## A super simple web spider
+# A super simple web spider
 
 Huntsman takes one or more 'seed' urls with the `spider.queue.add()` method.
 
