@@ -298,7 +298,7 @@ spider.on( 'example.com', function ( err, res ){
 
 This extension extracts links from html pages and returns the result.
 
-It exposes the functionality that the `recurse` extension uses to extract links.
+It exposes the same functionality that the `recurse` extension uses to extract links.
 
 ```javascript
 // enable extension
