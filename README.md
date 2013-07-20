@@ -137,7 +137,7 @@ spider.queue.add( 'http://www.amazon.co.uk/' );
 spider.start();
 ```
 
-### Find pets for sale on cragslist in london 
+### Find pets for sale on craigslist in london 
 
 More complex crawls may require you to specify hub pages to follow before you can get to the content you really want. You can add an `on` event without a callback & huntsman will still follow and extract links from it.
 
@@ -220,7 +220,7 @@ huntsman.extension( 'recurse', {
 // extract both anchor tags and script tags
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /(a([^>]+)href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, // anchor or script tags
+    search: /(a([^>]+)href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, // anchor or script
   }
 })
 ```
