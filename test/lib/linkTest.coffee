@@ -115,6 +115,11 @@ describe 'extractor', ->
         })
         .should.eql [ 'http://a.com/1.html' ]
 
+      it 'should filter non http(s) uris by default', ->
+
+        link.extractor( null, '<a href="http://a.com/1.html">1</a><a href="mailto:a@b.com">2</a>' )
+        .should.eql [ 'http://a.com/1.html' ]
+
       it 'should allow file extension filtering', ->
 
         link.extractor( null, '<a href="http://a.com/1.html">1</a><a href="http://b.com/2.jpg">2</a>', {
@@ -151,6 +156,7 @@ describe 'extractor', ->
 
       link.extractor( 'http://a.com', '<a href="1.html">1</a>', {
         resolver: ( url, baseUri ) -> return url # just return the url without modification
+        pattern: filter: /.*/ # allow any uri
       })
       .should.eql [ '1.html' ]
 
