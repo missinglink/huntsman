@@ -80,20 +80,29 @@ describe 'extractor', ->
 
       it 'should only refine anchor links', ->
 
-        link.extractor( 'http://example.com/', '<script src="/1.js">1</a><a href="/2.html">2</a>' )
+        link.extractor( 'http://example.com/', '<script src="/1.js">1</script><a href="/2.html">2</a>' )
         .should.eql [ 'http://example.com/2.html' ]
 
     describe 'should be overridable', ->
 
       it 'should allow script tags src to be extracted', ->
 
-        link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</a><a href="/2.html">2</a>', {
+        link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</script><a href="/2.html">2</a>', {
           pattern: {
             search: /script\ssrc\s?=\s?['"]([^"']+)/gi, # extract script tags and allow fragment hash
             refine: /['"]([^"']+)/ # allow fragment hash
           }
         })
         .should.eql [ 'http://example.com/1.js#foo' ]
+
+      it 'should allow both script & anchor tags to be extracted', ->
+
+        link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</script><a href="/2.html">2</a>', {
+          pattern: {
+            search: /(script\ssrc|a\shref)\s?=\s?['"]([^"'#]+)/gi, # anchor or script tags
+          }
+        })
+        .should.eql [ 'http://example.com/1.js', 'http://example.com/2.html' ]
 
   describe 'filter pattern', ->
 
