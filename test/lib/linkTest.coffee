@@ -109,7 +109,7 @@ describe 'extractor', ->
 
         link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</script><a href="/2.html">2</a>', {
           pattern: {
-            search: /(href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, # anchor or script tags
+            search: /(a([^>]+)href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, # anchor or script tags
           }
         })
         .should.eql [ 'http://example.com/1.js', 'http://example.com/2.html' ]
