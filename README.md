@@ -139,7 +139,7 @@ spider.start();
 
 ### Find pets for sale on cragslist in london 
 
-More complex crawl may require you to specify hub pages to follow before you can get to the content you really want.
+More complex crawls may require you to specify hub pages to follow before you can get to the content you really want. You can add an `on` event without a callback & huntsman will still follow and extract links from it.
 
 ```javascript
 /** Example of scraping information about pets for sale on cragslist in london **/
