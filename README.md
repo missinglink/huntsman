@@ -144,7 +144,7 @@ This extension parses html and provides jquery-style selectors & functions.
 huntsman.extension( 'cheerio', { lowerCaseTags: true } )
 ```
 
-The `res.extension.cheerio` function is available in your `on` callbacks when the response body is valid HTML.
+The `res.extension.cheerio` function is available in your `on` callbacks when the response body is HTML.
 
 ```javascript
 spider.on( 'example.com', function ( err, res ){
@@ -159,6 +159,59 @@ spider.on( 'example.com', function ( err, res ){
 ```
 
 `cheerio` reference: https://github.com/MatthewMueller/cheerio
+
+### json
+
+This extension parses the response body with `JSON.parse()`.
+
+```javascript
+// enable json
+huntsman.extension( 'json' )
+```
+
+The `res.extension.json` function is available in your `on` callbacks when the response body is json.
+
+```javascript
+spider.on( 'example.com', function ( err, res ){
+
+  var json = res.extension.json;
+  if( !json ) return; // content is not json
+
+  console.log( res.uri, json );
+
+});
+```
+
+### links
+
+This extension extracts links from html pages and returns the result.
+
+It exposes the functionality that the `recurse` extension uses to extract links.
+
+```javascript
+// enable extension
+huntsman.extension( 'links' )
+```
+
+The `res.extension.links` function is available in your `on` callbacks when the response body is a string.
+
+```javascript
+spider.on( 'example.com', function ( err, res ){
+
+  if( !res.extension.links ) return; // content is not a string
+
+  // extract all image tags from body
+  var images = res.extension.links({
+    pattern: {
+      search: /img\ssrc\s?=\s?['"]([^"'#]+)/gi, // extract img tags
+      filter: /\.jpg|\.gif|\.png/i // filter file types
+    }
+  });
+
+  console.log( images );
+
+});
+```
 
 ## Build Status
 
