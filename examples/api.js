@@ -10,7 +10,7 @@ spider.extensions = [
   huntsman.extension( 'recurse', {  // load recurse extension & follow 'followers' links
     pattern: {
       search: /"followers_url"\s*:\s*"([^"]+)/gi, // extract 'followers' links
-      refine: /"followers_url"\s*:\s*"([^"#]+)/i
+      refine: /"followers_url"\s*:\s*"([^"#]+)$/i
     }
   }),
   huntsman.extension( 'ratelimit' ), // handle github api rate limiting

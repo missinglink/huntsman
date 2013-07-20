@@ -83,13 +83,23 @@ describe 'extractor', ->
         link.extractor( 'http://example.com/', '<script src="/1.js">1</script><a href="/2.html">2</a>' )
         .should.eql [ 'http://example.com/2.html' ]
 
+      it 'should parse correctly when tag has preceding arguments', ->
+
+        link.extractor( 'http://example.com/', '<a id="myid" href="/1.html">1</a>' )
+        .should.eql [ 'http://example.com/1.html' ]
+
+      it 'should parse correctly when tag has succeeding arguments', ->
+
+        link.extractor( 'http://example.com/', '<a href="/1.html" id="myid">1</a>' )
+        .should.eql [ 'http://example.com/1.html' ]
+
     describe 'should be overridable', ->
 
       it 'should allow script tags src to be extracted', ->
 
         link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</script><a href="/2.html">2</a>', {
           pattern: {
-            search: /script\ssrc\s*=\s*['"]([^"']+)/gi, # extract script tags and allow fragment hash
+            search: /script([^>]+)src\s*=\s*['"]([^"']+)/gi, # extract script tags and allow fragment hash
             refine: /['"]([^"']+)/ # allow fragment hash
           }
         })
@@ -99,7 +109,7 @@ describe 'extractor', ->
 
         link.extractor( 'http://example.com/', '<script src="/1.js#foo">1</script><a href="/2.html">2</a>', {
           pattern: {
-            search: /(script\ssrc|a\shref)\s*=\s*['"]([^"'#]+)/gi, # anchor or script tags
+            search: /(href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, # anchor or script tags
           }
         })
         .should.eql [ 'http://example.com/1.js', 'http://example.com/2.html' ]

@@ -94,6 +94,20 @@ var spider = huntsman.spider({
 
 ---
 
+## Crawling a site
+
+How you configure your spider will vary from site to site, generally you will only be looking for for pages with a specific url format.
+
+```javascript
+// target only product pages on amazon
+spider.on( /^http:\/\/en\.amazon\.co\.uk\/([^\/]+)\/dp\/([^\/]+)/, function ( err, res ){
+  console.log( res.uri );
+});
+spider.queue.add( 'http://www.amazon.co.uk/Snow-White-Huntsman-Lily-Blake/dp/1907411704' );
+```
+
+---
+
 ## Extensions
 
 Extensions have default settings, you can override them by passing an optional second argument when the extension is loaded.
@@ -115,8 +129,8 @@ The default patterns only target anchor tags which use the http protocol, you ca
 // default patterns
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /a\shref\s*=\s*['"]([^"'#]+)/gi,
-    refine: /['"]([^"'#]+)/,
+    search: /href\s?=\s?['"]([^"'#]+)/gi,
+    refine: /['"]([^"'#]+)$/,
     filter: /^https?:\/\//
   }
 })
@@ -131,7 +145,7 @@ huntsman.extension( 'recurse', {
 // extract both anchor tags and script tags
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /(script\ssrc|a\shref)\s*=\s*['"]([^"'#]+)/gi, // anchor or script tags
+    search: /(href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, // anchor or script tags
   }
 })
 ```
@@ -226,7 +240,7 @@ spider.on( 'example.com', function ( err, res ){
   // extract all image tags from body
   var images = res.extension.links({
     pattern: {
-      search: /img\ssrc\s*=\s*['"]([^"'#]+)/gi, // extract img tags
+      search: /(img([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, // extract img tags
       filter: /\.jpg|\.gif|\.png/i // filter file types
     }
   });

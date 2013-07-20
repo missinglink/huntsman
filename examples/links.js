@@ -15,8 +15,8 @@ spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res ){
   // extract all script tags from body
   var scripts = res.extension.links({
     pattern: {
-      search: /script\ssrc\s*=\s*['"]([^"']+)/gi, // extract script tags and allow fragment hash
-      refine: /['"]([^"']+)/ // allow fragment hash
+      search: /script([^>]+)src\s*=\s*['"]([^"']+)/gi, // extract script tags and allow fragment hash
+      refine: /['"]([^"']+)$/ // allow fragment hash
     }
   });
 
