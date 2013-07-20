@@ -1,6 +1,4 @@
 
-# Super configurable async web spider
-
 ### Install
 
 ```bash
