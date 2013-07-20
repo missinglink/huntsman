@@ -44,18 +44,6 @@ spider.queue.add( 'http://en.wikipedia.org/wiki/Huntsman_spider' );
 spider.start();
 ```
 
-### How it works
-
-Huntsman takes one or more 'seed' urls with the `spider.queue.add()` method.
-
-Once the process is kicked off with `spider.start()`, it will take care of extracting links from the page and following only the pages we want.
-
-To define which pages are crawled use the `spider.on()` function with a string or regular expression.
-
-Each page will only be crawled once. If multiple regular expressions match the uri, they will all be called.
-
-**Page URLs which do not match an `on` condition will never be crawled**
-
 ### Example Output
 
 ```bash
@@ -70,6 +58,20 @@ peter@edgy:/tmp$ node examples/html.js
 ```
 
 More examples are available in the [/examples](https://github.com/missinglink/huntsman/tree/master/examples "Title") directory
+
+---
+
+## How it works
+
+Huntsman takes one or more 'seed' urls with the `spider.queue.add()` method.
+
+Once the process is kicked off with `spider.start()`, it will take care of extracting links from the page and following only the pages we want.
+
+To define which pages are crawled use the `spider.on()` function with a string or regular expression.
+
+Each page will only be crawled once. If multiple regular expressions match the uri, they will all be called.
+
+**Page URLs which do not match an `on` condition will never be crawled**
 
 ---
 
