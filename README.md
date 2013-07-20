@@ -213,6 +213,15 @@ spider.on( 'example.com', function ( err, res ){
 });
 ```
 
+### stats
+
+This extension displays statistics about pages crawled, error counts etc.
+
+```javascript
+// default settings
+huntsman.extension( 'stats', { tail: false } )
+```
+
 ## Build Status
 
 [![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
