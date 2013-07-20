@@ -8,7 +8,7 @@ spider.extensions = [
   huntsman.extension( 'recurse' ), // load recurse extension & follow anchor links
   huntsman.extension( 'recurse', {  // also recurse image links
     pattern: {
-      search: /img\ssrc\s?=\s?['"]([^"']+)/gi, // extract img tags
+      search: /img\ssrc\s*=\s*['"]([^"']+)/gi, // extract img tags
       filter: /\.jpg|\.gif|\.png/i // filter file types
     }
   })

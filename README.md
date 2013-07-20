@@ -113,7 +113,7 @@ The default patterns only target anchor tags which use the http protocol, you ca
 // default patterns
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /a\shref\s?=\s?['"]([^"'#]+)/gi,
+    search: /a\shref\s*=\s*['"]([^"'#]+)/gi,
     refine: /['"]([^"'#]+)/,
     filter: /^https?:\/\//
   }
@@ -129,7 +129,7 @@ huntsman.extension( 'recurse', {
 // extract both anchor tags and script tags
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /(script\ssrc|a\shref)\s?=\s?['"]([^"'#]+)/gi, // anchor or script tags
+    search: /(script\ssrc|a\shref)\s*=\s*['"]([^"'#]+)/gi, // anchor or script tags
   }
 })
 ```
@@ -224,7 +224,7 @@ spider.on( 'example.com', function ( err, res ){
   // extract all image tags from body
   var images = res.extension.links({
     pattern: {
-      search: /img\ssrc\s?=\s?['"]([^"'#]+)/gi, // extract img tags
+      search: /img\ssrc\s*=\s*['"]([^"'#]+)/gi, // extract img tags
       filter: /\.jpg|\.gif|\.png/i // filter file types
     }
   });
