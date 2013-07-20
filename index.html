@@ -101,7 +101,181 @@
 
 <p>More examples are available in the <a href="https://github.com/missinglink/huntsman/tree/master/examples" title="Title">/examples</a> directory</p>
 
-<h2>
+<hr><h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>The spider has default settings, you can override them by passing a settings object when you create a spider.</p>
+
+<div class="highlight"><pre><span class="c1">// use default settings</span>
+<span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="c1">// override default settings</span>
+<span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">({</span>
+  <span class="nx">throttle</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span> <span class="c1">// maximum requests per second</span>
+  <span class="nx">timeout</span><span class="o">:</span> <span class="mi">5000</span> <span class="c1">// maximum gap of inactivity before exiting (in milliseconds)</span>
+<span class="p">});</span>
+</pre></div>
+
+<hr><h2>
+<a name="extensions" class="anchor" href="#extensions"><span class="octicon octicon-link"></span></a>Extensions</h2>
+
+<p>Extensions have default settings, you can override them by passing an optional second argument when the extension is loaded.</p>
+
+<div class="highlight"><pre><span class="c1">// loading an extension</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">extensions</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'extension_name'</span><span class="p">,</span> <span class="nx">options</span> <span class="p">)</span>
+<span class="p">];</span>
+</pre></div>
+
+<h3>
+<a name="recurse" class="anchor" href="#recurse"><span class="octicon octicon-link"></span></a>recurse</h3>
+
+<p>This extension extracts links from html pages and then adds them to the queue.</p>
+
+<p>The default patterns only target anchor tags which use the http protocol, you can change any of the default patterns by declaring them when the extension is loaded.</p>
+
+<div class="highlight"><pre><span class="c1">// default patterns</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/a\shref\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span>
+    <span class="nx">refine</span><span class="o">:</span> <span class="sr">/['"]([^"'#]+)/</span><span class="p">,</span>
+    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\//</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<ul>
+<li>
+<code>search</code> must be a <code>global</code> regexp and is used to target the links we want to extract.</li>
+<li>
+<code>refine</code> is a regexp used to extract the bits we want from the <code>search</code> regex matches.</li>
+<li>
+<code>filter</code> is a regexp that must match or links are discarded.</li>
+</ul><div class="highlight"><pre><span class="c1">// extract both anchor tags and script tags</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(script\ssrc|a\shref)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script tags</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="c1">// avoid some file extensions</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/</span><span class="p">,</span> <span class="c1">// regex lookahead</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="c1">// stay on one domain</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/www.example.com/</span><span class="p">,</span> <span class="c1">// uris must be prefixed with this domain</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<p>By default <code>recurse</code> converts relative urls to absolute urls and strips fragment identifiers and trailing slashes.</p>
+
+<p>If you need even more control you can override the <code>resolver</code> &amp; <code>normaliser</code> functions to modify these behaviours.</p>
+
+<h3>
+<a name="cheerio" class="anchor" href="#cheerio"><span class="octicon octicon-link"></span></a>cheerio</h3>
+
+<p>This extension parses html and provides jquery-style selectors &amp; functions.</p>
+
+<div class="highlight"><pre><span class="c1">// default settings</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">lowerCaseTags</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">)</span>
+</pre></div>
+
+<p>The <code>res.extension.cheerio</code> function is available in your <code>on</code> callbacks when the response body is HTML.</p>
+
+<div class="highlight"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+
+  <span class="c1">// use jquery-style selectors &amp; functions</span>
+  <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">$</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not html</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">res</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">()</span> <span class="p">);</span>
+
+<span class="p">});</span>
+</pre></div>
+
+<p><code>cheerio</code> reference: <a href="https://github.com/MatthewMueller/cheerio">https://github.com/MatthewMueller/cheerio</a></p>
+
+<h3>
+<a name="json" class="anchor" href="#json"><span class="octicon octicon-link"></span></a>json</h3>
+
+<p>This extension parses the response body with <code>JSON.parse()</code>.</p>
+
+<div class="highlight"><pre><span class="c1">// enable json</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'json'</span> <span class="p">)</span>
+</pre></div>
+
+<p>The <code>res.extension.json</code> function is available in your <code>on</code> callbacks when the response body is json.</p>
+
+<div class="highlight"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+
+  <span class="kd">var</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">json</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">json</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not json</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">res</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span> <span class="nx">json</span> <span class="p">);</span>
+
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="links" class="anchor" href="#links"><span class="octicon octicon-link"></span></a>links</h3>
+
+<p>This extension extracts links from html pages and returns the result.</p>
+
+<p>It exposes the functionality that the <code>recurse</code> extension uses to extract links.</p>
+
+<div class="highlight"><pre><span class="c1">// enable extension</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'links'</span> <span class="p">)</span>
+</pre></div>
+
+<p>The <code>res.extension.links</code> function is available in your <code>on</code> callbacks when the response body is a string.</p>
+
+<div class="highlight"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">links</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not a string</span>
+
+  <span class="c1">// extract all image tags from body</span>
+  <span class="kd">var</span> <span class="nx">images</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">links</span><span class="p">({</span>
+    <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">search</span><span class="o">:</span> <span class="sr">/img\ssrc\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// extract img tags</span>
+      <span class="nx">filter</span><span class="o">:</span> <span class="sr">/\.jpg|\.gif|\.png/i</span> <span class="c1">// filter file types</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">images</span> <span class="p">);</span>
+
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="stats" class="anchor" href="#stats"><span class="octicon octicon-link"></span></a>stats</h3>
+
+<p>This extension displays statistics about pages crawled, error counts etc.</p>
+
+<div class="highlight"><pre><span class="c1">// default settings</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'stats'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">tail</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span> <span class="p">)</span>
+</pre></div>
+
+<hr><h2>
+<a name="custom-queues-and-response-storage-adapters" class="anchor" href="#custom-queues-and-response-storage-adapters"><span class="octicon octicon-link"></span></a>Custom queues and response storage adapters</h2>
+
+<p>I'm currently working on being able to persist the job queue via something like redis and potentially caching http responses in mongo with a TTL.</p>
+
+<p>If you live life on the wild side, these adapters can be configured when you create a spider.</p>
+
+<p>Pull requests welcome.</p>
+
+<hr><h2>
 <a name="build-status" class="anchor" href="#build-status"><span class="octicon octicon-link"></span></a>Build Status</h2>
 
 <p><a href="https://travis-ci.org/missinglink/huntsman"><img src="https://travis-ci.org/missinglink/huntsman.png?branch=master" alt="Build Status"></a></p>
