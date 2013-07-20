@@ -117,7 +117,7 @@ huntsman.extension( 'recurse', {
 // avoid some file extensions
 huntsman.extension( 'recurse', {
   pattern: {
-    filter: /^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/, // use lookahead to skip downloads
+    filter: /^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/, // regex lookahead
   }
 })
 ```
