@@ -69,6 +69,8 @@ peter@edgy:/tmp$ node examples/html.js
 
 More examples are available in the [/examples](https://github.com/missinglink/huntsman/tree/master/examples "Title") directory
 
+---
+
 ## Extensions
 
 Extensions have default settings, you can override them by passing an optional second argument when the extension is loaded.
@@ -115,6 +117,19 @@ huntsman.extension( 'recurse', {
 })
 ```
 
+```javascript
+// stay on one domain
+huntsman.extension( 'recurse', {
+  pattern: {
+    search: /^https?:\/\/www.example.com/, // uris must be prefixed with this domain
+  }
+})
+```
+
+By default `recurse` converts relative urls to absolute urls and strips fragment identifiers and trailing slashes.
+
+If you need even more control you can override the `resolver` & `normaliser` functions to modify these behaviours.
+
 ### cheerio
 
 This extension parses html and provides jquery-style selectors & functions.
@@ -124,9 +139,9 @@ This extension parses html and provides jquery-style selectors & functions.
 huntsman.extension( 'cheerio', { lowerCaseTags: true } )
 ```
 
-The `res.extension.cheerio` function is available in your `on` callbacks when the response body is valid HTML
+The `res.extension.cheerio` function is available in your `on` callbacks when the response body is valid HTML.
 
-```
+```javascript
 spider.on( 'example.com', function ( err, res ){
 
   // use jquery-style selectors & functions
@@ -139,8 +154,6 @@ spider.on( 'example.com', function ( err, res ){
 ```
 
 `cheerio` reference: https://github.com/MatthewMueller/cheerio
-
-If you even more control you can override the `resolver` & `normaliser` functions.
 
 ## Build Status
 
