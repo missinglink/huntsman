@@ -98,12 +98,87 @@ var spider = huntsman.spider({
 
 How you configure your spider will vary from site to site, generally you will only be looking for for pages with a specific url format.
 
+### Scrape product information from amazon
+
+In this example we can see that amazon product uris all seem to share the format `'/gp/product/'`.
+
+After queueing the seed uri `http://www.amazon.co.uk/` huntsman will follow all the product pages it finds recursively.
+
 ```javascript
-// target only product pages on amazon
-spider.on( /^http:\/\/en\.amazon\.co\.uk\/([^\/]+)\/dp\/([^\/]+)/, function ( err, res ){
-  console.log( res.uri );
+/** Example of scraping products from the amazon website **/
+
+var huntsman = require('huntsman');
+var spider = huntsman.spider();
+
+spider.extensions = [
+  huntsman.extension( 'recurse' ), // load recurse extension & follow anchor links
+  huntsman.extension( 'cheerio' ) // load cheerio extension
+];
+
+// target only product uris
+spider.on( '/gp/product/', function ( err, res ){
+
+  if( !res.extension.cheerio ) return; // content is not html
+  var $ = res.extension.cheerio;
+
+  // extract product information
+  var product = {
+    uri: res.uri,
+    heading: $('h1.parseasinTitle').text().trim(),
+    image: $('img#main-image').attr('src'),
+    description: $('#productDescription').text().trim().substr( 0, 50 )
+  };
+
+  console.log( product );
+
 });
-spider.queue.add( 'http://www.amazon.co.uk/Snow-White-Huntsman-Lily-Blake/dp/1907411704' );
+
+spider.queue.add( 'http://www.amazon.co.uk/' );
+spider.start();
+```
+
+### Find pets for sale on cragslist in london 
+
+More complex crawl may require you to specify hub pages to follow before you can get to the content you really want.
+
+```javascript
+/** Example of scraping information about pets for sale on cragslist in london **/
+
+var huntsman = require('huntsman');
+var spider = huntsman.spider({
+  throttle: 2
+});
+
+spider.extensions = [
+  huntsman.extension( 'recurse' ), // load recurse extension & follow anchor links
+  huntsman.extension( 'cheerio' ), // load cheerio extension
+  huntsman.extension( 'stats' ) // load stats extension
+];
+
+// target only pet uris
+spider.on( /\/pet\/(\w+)\.html$/, function ( err, res ){
+
+  if( !res.extension.cheerio ) return; // content is not html
+  var $ = res.extension.cheerio;
+
+  // extract listing information
+  var listing = {
+    heading: $('h2.postingtitle').text().trim(),
+    uri: res.uri,
+    image: $('img#iwi').attr('src'),
+    description: $('#postingbody').text().trim().substr( 0, 50 )
+  };
+
+  console.log( listing );
+
+});
+
+// hub pages
+spider.on( /http:\/\/london\.craigslist\.co\.uk$/ );
+spider.on( /\/pet$/ );
+
+spider.queue.add( 'http://www.craigslist.org/about/sites' );
+spider.start();
 ```
 
 ---
