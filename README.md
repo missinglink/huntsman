@@ -69,6 +69,79 @@ peter@edgy:/tmp$ node examples/html.js
 
 More examples are available in the [/examples](https://github.com/missinglink/huntsman/tree/master/examples "Title") directory
 
+## Extensions
+
+Extensions have default settings, you can override them by passing an optional second argument when the extension is loaded.
+
+```javascript
+// loading a module
+spider.extensions = [
+  huntsman.extension( 'module_name', options )
+];
+```
+
+### recurse
+
+This extension extracts links from html pages and then adds them to the queue.
+
+The default patterns only target anchor tags which use the http protocol, you can change any of the default patterns by declaring them when the extension is loaded.
+
+```javascript
+// default patterns
+huntsman.extension( 'recurse', {
+  pattern: {
+    search: /a\shref\s?=\s?['"]([^"'#]+)/gi,
+    refine: /['"]([^"'#]+)/,
+    filter: /^https?:\/\//
+  }
+})
+```
+
+```javascript
+// extract both anchor tags and script tags
+huntsman.extension( 'recurse', {
+  pattern: {
+    search: /(script\ssrc|a\shref)\s?=\s?['"]([^"'#]+)/gi, // anchor or script tags
+  }
+})
+```
+
+```javascript
+// avoid some file extensions
+huntsman.extension( 'recurse', {
+  pattern: {
+    search: /^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/, // use lookahead to skip downloads
+  }
+})
+```
+
+### cheerio
+
+This extension parses html and provides jquery-style selectors & functions.
+
+```javascript
+// default settings
+huntsman.extension( 'cheerio', { lowerCaseTags: true } )
+```
+
+The `res.extension.cheerio` function is available in your `on` callbacks when the response body is valid HTML
+
+```
+spider.on( 'example.com', function ( err, res ){
+
+  // use jquery-style selectors & functions
+  var $ = res.extension.cheerio;
+  if( !$ ) return; // content is not html
+
+  console.log( res.uri, $('h1').text().trim() );
+
+});
+```
+
+`cheerio` reference: https://github.com/MatthewMueller/cheerio
+
+If you even more control you can override the `resolver` & `normaliser` functions.
+
 ## Build Status
 
 [![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
