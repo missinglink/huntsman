@@ -99,6 +99,11 @@ huntsman.extension( 'recurse', {
 })
 ```
 
+- `search` must be a `global` regexp and is used to target the links we want to extract.
+- `refine` is a regexp used to extract the bits we want from the `search` regex matches.
+- `filter` is a regexp that must match or links are discarded.
+
+
 ```javascript
 // extract both anchor tags and script tags
 huntsman.extension( 'recurse', {
