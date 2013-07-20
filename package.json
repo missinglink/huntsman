@@ -3,7 +3,7 @@
   "preferGlobal": false,
   "private": false,
   "version": "0.1.9",
-  "description": "Super simple web spider",
+  "description": "Super configurable async web spider",
   "contributors": [],
   "dependencies": {
     "regexemitter": "0.1.2",
@@ -20,7 +20,7 @@
     "coffee-script": "*",
     "breakdown": "*"
   },
-  "readme": "# Super simple web spider",
+  "readme": "# Super configurable async web spider",
   "engines": {
     "node": ">0.6.0",
     "npm": ">1.1.x"
