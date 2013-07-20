@@ -14,6 +14,7 @@ spider.on( /http:\/\/en\.wikipedia\.org\/wiki\/\w+:\w+$/, function ( err, res ){
 
   // use jquery-style selectors & functions
   var $ = res.extension.cheerio;
+  if( !$ ) return; // content is not html
 
   // extract information from page body
   var wikipedia = {
