@@ -164,7 +164,7 @@
 </pre></div>
 
 <h3>
-<a name="find-pets-for-sale-on-cragslist-in-london" class="anchor" href="#find-pets-for-sale-on-cragslist-in-london"><span class="octicon octicon-link"></span></a>Find pets for sale on cragslist in london</h3>
+<a name="find-pets-for-sale-on-craigslist-in-london" class="anchor" href="#find-pets-for-sale-on-craigslist-in-london"><span class="octicon octicon-link"></span></a>Find pets for sale on craigslist in london</h3>
 
 <p>More complex crawls may require you to specify hub pages to follow before you can get to the content you really want. You can add an <code>on</code> event without a callback &amp; huntsman will still follow and extract links from it.</p>
 
@@ -245,7 +245,7 @@
 </ul><div class="highlight"><pre><span class="c1">// extract both anchor tags and script tags</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(a([^&gt;]+)href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script tags</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(a([^&gt;]+)href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script</span>
   <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
