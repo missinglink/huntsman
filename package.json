@@ -7,7 +7,7 @@
   "contributors": [],
   "dependencies": {
     "regexemitter": "0.1.2",
-    "request": "~2.22.0",
+    "superagent": "~0.15.4",
     "async": "~0.2.9",
     "cheerio": "~0.11.0"
   },
