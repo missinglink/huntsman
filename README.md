@@ -71,14 +71,35 @@ More examples are available in the [/examples](https://github.com/missinglink/hu
 
 ---
 
+## Configuration
+
+The spider has default settings, you can override them by passing a settings object when you create a spider.
+
+```javascript
+// use default settings
+var huntsman = require('huntsman');
+var spider = huntsman.spider();
+```
+
+```javascript
+// override default settings
+var huntsman = require('huntsman');
+var spider = huntsman.spider({
+  throttle: 10, // maximum requests per second
+  timeout: 5000 // maximum gap of inactivity before exiting (in milliseconds)
+});
+```
+
+---
+
 ## Extensions
 
 Extensions have default settings, you can override them by passing an optional second argument when the extension is loaded.
 
 ```javascript
-// loading a module
+// loading an extension
 spider.extensions = [
-  huntsman.extension( 'module_name', options )
+  huntsman.extension( 'extension_name', options )
 ];
 ```
 
@@ -221,6 +242,18 @@ This extension displays statistics about pages crawled, error counts etc.
 // default settings
 huntsman.extension( 'stats', { tail: false } )
 ```
+
+---
+
+## Custom queues and response storage adapters
+
+I'm currently working on being able to persist the job queue via something like redis and potentially caching http responses in mongo with a TTL.
+
+If you live life on the wild side, these adapters can be configured when you create a spider.
+
+Pull requests welcome.
+
+---
 
 ## Build Status
 
