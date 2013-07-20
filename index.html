@@ -166,7 +166,7 @@
 <h3>
 <a name="find-pets-for-sale-on-cragslist-in-london" class="anchor" href="#find-pets-for-sale-on-cragslist-in-london"><span class="octicon octicon-link"></span></a>Find pets for sale on cragslist in london</h3>
 
-<p>More complex crawl may require you to specify hub pages to follow before you can get to the content you really want.</p>
+<p>More complex crawls may require you to specify hub pages to follow before you can get to the content you really want. You can add an <code>on</code> event without a callback &amp; huntsman will still follow and extract links from it.</p>
 
 <div class="highlight"><pre><span class="cm">/** Example of scraping information about pets for sale on cragslist in london **/</span>
 
@@ -228,7 +228,7 @@
 <div class="highlight"><pre><span class="c1">// default patterns</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">search</span><span class="o">:</span> <span class="sr">/href\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/a([^&gt;]+)href\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span>
     <span class="nx">refine</span><span class="o">:</span> <span class="sr">/['"]([^"'#]+)$/</span><span class="p">,</span>
     <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\//</span>
   <span class="p">}</span>
@@ -245,7 +245,7 @@
 </ul><div class="highlight"><pre><span class="c1">// extract both anchor tags and script tags</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script tags</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(a([^&gt;]+)href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script tags</span>
   <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
@@ -320,7 +320,7 @@
 
 <p>This extension extracts links from html pages and returns the result.</p>
 
-<p>It exposes the functionality that the <code>recurse</code> extension uses to extract links.</p>
+<p>It exposes the same functionality that the <code>recurse</code> extension uses to extract links.</p>
 
 <div class="highlight"><pre><span class="c1">// enable extension</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'links'</span> <span class="p">)</span>
