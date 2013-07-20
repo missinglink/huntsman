@@ -30,20 +30,7 @@
 
       </header>
       <section>
-        <h1>
-<a name="a-super-simple-web-spider" class="anchor" href="#a-super-simple-web-spider"><span class="octicon octicon-link"></span></a>A super simple web spider</h1>
-
-<p>Huntsman takes one or more 'seed' urls with the <code>spider.queue.add()</code> method.</p>
-
-<p>Once the process is kicked off with <code>spider.start()</code>, it will take care of extracting links from the page and following only the pages we want.</p>
-
-<p>To define which pages are crawled and extract data, use <code>spider.on()</code> with a string or regular expression.</p>
-
-<p>Each page will only be crawled once. If multiple regular expressions match the uri, they will all be called.</p>
-
-<p><strong>Page URLs which do not match an <code>on</code> condition will never be crawled</strong></p>
-
-<h3>
+        <h3>
 <a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h3>
 
 <div class="highlight"><pre>npm install huntsman --save
@@ -102,6 +89,19 @@
 <p>More examples are available in the <a href="https://github.com/missinglink/huntsman/tree/master/examples" title="Title">/examples</a> directory</p>
 
 <hr><h2>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How it works</h2>
+
+<p>Huntsman takes one or more 'seed' urls with the <code>spider.queue.add()</code> method.</p>
+
+<p>Once the process is kicked off with <code>spider.start()</code>, it will take care of extracting links from the page and following only the pages we want.</p>
+
+<p>To define which pages are crawled use the <code>spider.on()</code> function with a string or regular expression.</p>
+
+<p>Each page will only be crawled once. If multiple regular expressions match the uri, they will all be called.</p>
+
+<p><strong>Page URLs which do not match an <code>on</code> condition will never be crawled</strong></p>
+
+<hr><h2>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>The spider has default settings, you can override them by passing a settings object when you create a spider.</p>
@@ -117,6 +117,94 @@
   <span class="nx">throttle</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span> <span class="c1">// maximum requests per second</span>
   <span class="nx">timeout</span><span class="o">:</span> <span class="mi">5000</span> <span class="c1">// maximum gap of inactivity before exiting (in milliseconds)</span>
 <span class="p">});</span>
+</pre></div>
+
+<hr><h2>
+<a name="crawling-a-site" class="anchor" href="#crawling-a-site"><span class="octicon octicon-link"></span></a>Crawling a site</h2>
+
+<p>How you configure your spider will vary from site to site, generally you will only be looking for for pages with a specific url format.</p>
+
+<h3>
+<a name="scrape-product-information-from-amazon" class="anchor" href="#scrape-product-information-from-amazon"><span class="octicon octicon-link"></span></a>Scrape product information from amazon</h3>
+
+<p>In this example we can see that amazon product uris all seem to share the format <code>'/gp/product/'</code>.</p>
+
+<p>After queueing the seed uri <code>http://www.amazon.co.uk/</code> huntsman will follow all the product pages it finds recursively.</p>
+
+<div class="highlight"><pre><span class="cm">/** Example of scraping products from the amazon website **/</span>
+
+<span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">extensions</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span> <span class="p">),</span> <span class="c1">// load recurse extension &amp; follow anchor links</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span> <span class="p">)</span> <span class="c1">// load cheerio extension</span>
+<span class="p">];</span>
+
+<span class="c1">// target only product uris</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'/gp/product/'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not html</span>
+  <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span><span class="p">;</span>
+
+  <span class="c1">// extract product information</span>
+  <span class="kd">var</span> <span class="nx">product</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">uri</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span>
+    <span class="nx">heading</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'h1.parseasinTitle'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="nx">image</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'img#main-image'</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'src'</span><span class="p">),</span>
+    <span class="nx">description</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'#productDescription'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">().</span><span class="nx">substr</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span> <span class="p">)</span>
+  <span class="p">};</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">product</span> <span class="p">);</span>
+
+<span class="p">});</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="s1">'http://www.amazon.co.uk/'</span> <span class="p">);</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="find-pets-for-sale-on-cragslist-in-london" class="anchor" href="#find-pets-for-sale-on-cragslist-in-london"><span class="octicon octicon-link"></span></a>Find pets for sale on cragslist in london</h3>
+
+<p>More complex crawl may require you to specify hub pages to follow before you can get to the content you really want.</p>
+
+<div class="highlight"><pre><span class="cm">/** Example of scraping information about pets for sale on cragslist in london **/</span>
+
+<span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">({</span>
+  <span class="nx">throttle</span><span class="o">:</span> <span class="mi">2</span>
+<span class="p">});</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">extensions</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span> <span class="p">),</span> <span class="c1">// load recurse extension &amp; follow anchor links</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span> <span class="p">),</span> <span class="c1">// load cheerio extension</span>
+  <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'stats'</span> <span class="p">)</span> <span class="c1">// load stats extension</span>
+<span class="p">];</span>
+
+<span class="c1">// target only pet uris</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="sr">/\/pet\/(\w+)\.html$/</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not html</span>
+  <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span><span class="p">;</span>
+
+  <span class="c1">// extract listing information</span>
+  <span class="kd">var</span> <span class="nx">listing</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">heading</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'h2.postingtitle'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="nx">uri</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span>
+    <span class="nx">image</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'img#iwi'</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'src'</span><span class="p">),</span>
+    <span class="nx">description</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'#postingbody'</span><span class="p">).</span><span class="nx">text</span><span class="p">().</span><span class="nx">trim</span><span class="p">().</span><span class="nx">substr</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span> <span class="p">)</span>
+  <span class="p">};</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">listing</span> <span class="p">);</span>
+
+<span class="p">});</span>
+
+<span class="c1">// hub pages</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="sr">/http:\/\/london\.craigslist\.co\.uk$/</span> <span class="p">);</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="sr">/\/pet$/</span> <span class="p">);</span>
+
+<span class="nx">spider</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="s1">'http://www.craigslist.org/about/sites'</span> <span class="p">);</span>
+<span class="nx">spider</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
 <hr><h2>
@@ -140,8 +228,8 @@
 <div class="highlight"><pre><span class="c1">// default patterns</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">search</span><span class="o">:</span> <span class="sr">/a\shref\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span>
-    <span class="nx">refine</span><span class="o">:</span> <span class="sr">/['"]([^"'#]+)/</span><span class="p">,</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/href\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span>
+    <span class="nx">refine</span><span class="o">:</span> <span class="sr">/['"]([^"'#]+)$/</span><span class="p">,</span>
     <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\//</span>
   <span class="p">}</span>
 <span class="p">})</span>
@@ -157,7 +245,7 @@
 </ul><div class="highlight"><pre><span class="c1">// extract both anchor tags and script tags</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(script\ssrc|a\shref)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script tags</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script tags</span>
   <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
@@ -247,7 +335,7 @@
   <span class="c1">// extract all image tags from body</span>
   <span class="kd">var</span> <span class="nx">images</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">links</span><span class="p">({</span>
     <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">search</span><span class="o">:</span> <span class="sr">/img\ssrc\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// extract img tags</span>
+      <span class="nx">search</span><span class="o">:</span> <span class="sr">/(img([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// extract img tags</span>
       <span class="nx">filter</span><span class="o">:</span> <span class="sr">/\.jpg|\.gif|\.png/i</span> <span class="c1">// filter file types</span>
     <span class="p">}</span>
   <span class="p">});</span>
