@@ -139,14 +139,23 @@ describe 'extractor', ->
         link.extractor( null, '<a href="http://a.com/1.html">1</a><a href="mailto:a@b.com">2</a>' )
         .should.eql [ 'http://a.com/1.html' ]
 
-      it 'should allow file extension exclusions using a lookahead', ->
+      it 'should allow filtering out certain file extension using a lookahead', ->
 
-        link.extractor( null, '<a href="http://a.com/1.mp3">1</a><a href="http://a.com/1.pdf">2</a>', {
+        link.extractor( null, '<a href="http://a.com/1.mp3">1</a><a href="http://a.com/2.pdf">2</a>', {
           pattern: {
             filter: /^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/
           }
         })
         .should.eql [ 'http://a.com/1.mp3' ]
+
+      it 'should allow filtering out all uris with three letter extensions', ->
+
+        link.extractor( null, '<a href="http://a.com/1.mp3">1</a><a href="http://a.com/2">2</a>', {
+          pattern: {
+            filter: /^https?:\/\/.*(?!\.\w{3})....$/
+          }
+        })
+        .should.eql [ 'http://a.com/2' ]
 
       it 'should allow file extension filtering', ->
 

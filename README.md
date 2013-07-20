@@ -220,7 +220,7 @@ huntsman.extension( 'recurse', {
 // extract both anchor tags and script tags
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /(a([^>]+)href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, // anchor or script
+    search: /(a([^>]+)href|script([^>]+)src)\s?=\s?['"]([^"'#]+)/gi, // <a> or <script>
   }
 })
 ```
@@ -229,7 +229,16 @@ huntsman.extension( 'recurse', {
 // avoid some file extensions
 huntsman.extension( 'recurse', {
   pattern: {
-    filter: /^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/, // regex lookahead
+    filter: /^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/i, // regex lookahead
+  }
+})
+```
+
+```javascript
+// avoid all uris with three letter file extensions
+huntsman.extension( 'recurse', {
+  pattern: {
+    filter: /^https?:\/\/.*(?!\.\w{3})....$/, // exclude three letter file extensions
   }
 })
 ```
@@ -238,7 +247,7 @@ huntsman.extension( 'recurse', {
 // stay on one domain
 huntsman.extension( 'recurse', {
   pattern: {
-    filter: /^https?:\/\/www.example.com/, // uris must be prefixed with this domain
+    filter: /^https?:\/\/www.example.com/i, // uris must be prefixed with this domain
   }
 })
 ```
