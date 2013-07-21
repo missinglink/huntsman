@@ -229,7 +229,7 @@ huntsman.extension( 'recurse', {
 // ignore query segment of uris (exclude everything from '?' onwards)
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /a([^>]+)href\s?=\s?['"]([^"'#\?]+)/gi // chars which define end of uri [^"'#\?]
+    search: /a([^>]+)href\s?=\s?['"]([^"'#\?]+)/gi // charlist for end of uri [^"'#\?]
   }
 })
 ```
