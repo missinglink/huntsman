@@ -256,7 +256,7 @@ huntsman.extension( 'recurse', {
 // stay on one domain
 huntsman.extension( 'recurse', {
   pattern: {
-    filter: /^https?:\/\/www.example.com/i, // uris must be prefixed with this domain
+    filter: /^https?:\/\/www\.example\.com/i, // uris must be prefixed with this domain
   }
 })
 ```
