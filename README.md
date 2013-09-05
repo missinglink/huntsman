@@ -367,3 +367,6 @@ Pull requests welcome.
 ## Build Status
 
 [![Build Status](https://travis-ci.org/missinglink/huntsman.png?branch=master)](https://travis-ci.org/missinglink/huntsman)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/missinglink/huntsman/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
