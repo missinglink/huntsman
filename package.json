@@ -6,7 +6,7 @@
   "description": "Super configurable async web spider",
   "contributors": [],
   "dependencies": {
-    "regexemitter": "0.2.2",
+    "regexemitter": "0.2.3",
     "superagent": "~0.15.4",
     "async": "~0.2.9",
     "cheerio": "~0.11.0"
