@@ -33,7 +33,7 @@
         <h3>
 <a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h3>
 
-<div class="highlight"><pre>npm install huntsman --save
+<div class="highlight highlight-bash"><pre>npm install huntsman --save
 </pre></div>
 
 <p><a href="https://nodei.co/npm/huntsman/"><img src="https://nodei.co/npm/huntsman.png?downloads=true&amp;stars=true" alt="NPM"></a></p>
@@ -41,7 +41,7 @@
 <h3>
 <a name="example-script" class="anchor" href="#example-script"><span class="octicon octicon-link"></span></a>Example Script</h3>
 
-<div class="highlight"><pre><span class="cm">/** Crawl wikipedia and use jquery syntax to extract information from the page **/</span>
+<div class="highlight highlight-javascript"><pre><span class="cm">/** Crawl wikipedia and use jquery syntax to extract information from the page **/</span>
 
 <span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
@@ -76,7 +76,7 @@
 <h3>
 <a name="example-output" class="anchor" href="#example-output"><span class="octicon octicon-link"></span></a>Example Output</h3>
 
-<div class="highlight"><pre>peter@edgy:/tmp<span class="nv">$ </span>node examples/html.js 
+<div class="highlight highlight-bash"><pre>peter@edgy:/tmp<span class="nv">$ </span>node examples/html.js 
 <span class="o">{</span>
   <span class="s2">"uri"</span>: <span class="s2">"http://en.wikipedia.org/wiki/Wikipedia:Recent_additions"</span>,
   <span class="s2">"heading"</span>: <span class="s2">"Wikipedia:Recent additions"</span>,
@@ -106,12 +106,12 @@
 
 <p>The spider has default settings, you can override them by passing a settings object when you create a spider.</p>
 
-<div class="highlight"><pre><span class="c1">// use default settings</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// use default settings</span>
 <span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
 </pre></div>
 
-<div class="highlight"><pre><span class="c1">// override default settings</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// override default settings</span>
 <span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">({</span>
   <span class="nx">throttle</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span> <span class="c1">// maximum requests per second</span>
@@ -131,7 +131,7 @@
 
 <p>After queueing the seed uri <code>http://www.amazon.co.uk/</code> huntsman will follow all the product pages it finds recursively.</p>
 
-<div class="highlight"><pre><span class="cm">/** Example of scraping products from the amazon website **/</span>
+<div class="highlight highlight-javascript"><pre><span class="cm">/** Example of scraping products from the amazon website **/</span>
 
 <span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">();</span>
@@ -168,7 +168,7 @@
 
 <p>More complex crawls may require you to specify hub pages to follow before you can get to the content you really want. You can add an <code>on</code> event without a callback &amp; huntsman will still follow and extract links from it.</p>
 
-<div class="highlight"><pre><span class="cm">/** Example of scraping information about pets for sale on cragslist in london **/</span>
+<div class="highlight highlight-javascript"><pre><span class="cm">/** Example of scraping information about pets for sale on cragslist in london **/</span>
 
 <span class="kd">var</span> <span class="nx">huntsman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'huntsman'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">spider</span> <span class="o">=</span> <span class="nx">huntsman</span><span class="p">.</span><span class="nx">spider</span><span class="p">({</span>
@@ -212,7 +212,7 @@
 
 <p>Extensions have default settings, you can override them by passing an optional second argument when the extension is loaded.</p>
 
-<div class="highlight"><pre><span class="c1">// loading an extension</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// loading an extension</span>
 <span class="nx">spider</span><span class="p">.</span><span class="nx">extensions</span> <span class="o">=</span> <span class="p">[</span>
   <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'extension_name'</span><span class="p">,</span> <span class="nx">options</span> <span class="p">)</span>
 <span class="p">];</span>
@@ -225,7 +225,7 @@
 
 <p>The default patterns only target anchor tags which use the http protocol, you can change any of the default patterns by declaring them when the extension is loaded.</p>
 
-<div class="highlight"><pre><span class="c1">// default patterns</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// default patterns</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">search</span><span class="o">:</span> <span class="sr">/a([^&gt;]+)href\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span>
@@ -242,26 +242,42 @@
 <code>refine</code> is a regexp used to extract the bits we want from the <code>search</code> regex matches.</li>
 <li>
 <code>filter</code> is a regexp that must match or links are discarded.</li>
-</ul><div class="highlight"><pre><span class="c1">// extract both anchor tags and script tags</span>
+</ul><div class="highlight highlight-javascript"><pre><span class="c1">// extract both anchor tags and script tags</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(a([^&gt;]+)href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// anchor or script</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/(a([^&gt;]+)href|script([^&gt;]+)src)\s?=\s?['"]([^"'#]+)/gi</span><span class="p">,</span> <span class="c1">// &lt;a&gt; or &lt;script&gt;</span>
   <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
 
-<div class="highlight"><pre><span class="c1">// avoid some file extensions</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// ignore query segment of uris (exclude everything from '?' onwards)</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/</span><span class="p">,</span> <span class="c1">// regex lookahead</span>
+    <span class="nx">search</span><span class="o">:</span> <span class="sr">/a([^&gt;]+)href\s?=\s?['"]([^"'#\?]+)/gi</span> <span class="c1">// charlist for end of uri [^"'#\?]</span>
   <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
 
-<div class="highlight"><pre><span class="c1">// stay on one domain</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// avoid some file extensions</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/www.example.com/</span><span class="p">,</span> <span class="c1">// uris must be prefixed with this domain</span>
+    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/.*(?!\.(pdf|png|jpg|gif|zip))....$/i</span><span class="p">,</span> <span class="c1">// regex lookahead</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// avoid all uris with three letter file extensions</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/.*(?!\.\w{3})....$/</span><span class="p">,</span> <span class="c1">// exclude three letter file extensions</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// stay on one domain</span>
+<span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'recurse'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">pattern</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">filter</span><span class="o">:</span> <span class="sr">/^https?:\/\/www\.example\.com/i</span><span class="p">,</span> <span class="c1">// uris must be prefixed with this domain</span>
   <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
@@ -275,13 +291,13 @@
 
 <p>This extension parses html and provides jquery-style selectors &amp; functions.</p>
 
-<div class="highlight"><pre><span class="c1">// default settings</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// default settings</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'cheerio'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">lowerCaseTags</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">)</span>
 </pre></div>
 
 <p>The <code>res.extension.cheerio</code> function is available in your <code>on</code> callbacks when the response body is HTML.</p>
 
-<div class="highlight"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
 
   <span class="c1">// use jquery-style selectors &amp; functions</span>
   <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">cheerio</span><span class="p">;</span>
@@ -299,13 +315,13 @@
 
 <p>This extension parses the response body with <code>JSON.parse()</code>.</p>
 
-<div class="highlight"><pre><span class="c1">// enable json</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// enable json</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'json'</span> <span class="p">)</span>
 </pre></div>
 
 <p>The <code>res.extension.json</code> function is available in your <code>on</code> callbacks when the response body is json.</p>
 
-<div class="highlight"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
 
   <span class="kd">var</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">json</span><span class="p">;</span>
   <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">json</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not json</span>
@@ -322,13 +338,13 @@
 
 <p>It exposes the same functionality that the <code>recurse</code> extension uses to extract links.</p>
 
-<div class="highlight"><pre><span class="c1">// enable extension</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// enable extension</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'links'</span> <span class="p">)</span>
 </pre></div>
 
 <p>The <code>res.extension.links</code> function is available in your <code>on</code> callbacks when the response body is a string.</p>
 
-<div class="highlight"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">spider</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'example.com'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span> <span class="p">){</span>
 
   <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">res</span><span class="p">.</span><span class="nx">extension</span><span class="p">.</span><span class="nx">links</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// content is not a string</span>
 
@@ -350,7 +366,7 @@
 
 <p>This extension displays statistics about pages crawled, error counts etc.</p>
 
-<div class="highlight"><pre><span class="c1">// default settings</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// default settings</span>
 <span class="nx">huntsman</span><span class="p">.</span><span class="nx">extension</span><span class="p">(</span> <span class="s1">'stats'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">tail</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span> <span class="p">)</span>
 </pre></div>
 
@@ -367,9 +383,37 @@
 <a name="build-status" class="anchor" href="#build-status"><span class="octicon octicon-link"></span></a>Build Status</h2>
 
 <p><a href="https://travis-ci.org/missinglink/huntsman"><img src="https://travis-ci.org/missinglink/huntsman.png?branch=master" alt="Build Status"></a></p>
+
+<p><a href="https://bitdeli.com/free" title="Bitdeli Badge"><img src="https://d2weczhvl823v0.cloudfront.net/missinglink/huntsman/trend.png" alt="Bitdeli Badge"></a></p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2013 Peter Johnson &lt;@insertcoffee&gt;</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
       </section>
       <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
