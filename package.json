@@ -2,9 +2,34 @@
   "name": "huntsman",
   "preferGlobal": false,
   "private": false,
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Super configurable async web spider",
-  "contributors": [],
+  "keywords": [
+    "spider",
+    "crawler",
+    "crawl",
+    "huntsman",
+    "robot",
+    "aync"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/missinglink/huntsman.git"
+  },
+  "bugs": {
+    "url": "http://github.com/missinglink/huntsman/issues"
+  },
+  "author": {
+    "name": "Peter Johnson",
+    "email": "@insertcoffee",
+    "url": "https://github.com/missinglink/"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
   "dependencies": {
     "regexemitter": "0.2.3",
     "superagent": "~0.15.4",
@@ -20,13 +45,8 @@
     "coffee-script": "*",
     "breakdown": "*"
   },
-  "readme": "# Super configurable async web spider",
   "engines": {
     "node": ">0.6.0",
     "npm": ">1.1.x"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/missinglink/huntsman.git"
   }
 }
