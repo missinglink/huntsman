@@ -8,12 +8,16 @@ describe 'mock proxy', ->
   it 'should hit cache for example fixture', (done) ->
 
     http = proxy();
-    http 'http://www.example.com', ( err, res, body ) ->
+    http 'http://www.example.com', ( err, res ) ->
 
       should.not.exist err
+      should.exist res.uri
+      should.exist res.statusCode
+      should.exist res.body
+
       res.uri.should.eql 'http://www.example.com'
       res.statusCode.should.eql 200
-      body.should.equal '<html><body>Hello World!</body></html>'
+      res.body.should.equal '<html><body>Hello World!</body></html>'
       done()
 
   it 'should miss cache for random uri', (done) ->
@@ -36,18 +40,22 @@ describe 'mock proxy', ->
         res: {
           uri: 'http://www.foo.com',
           statusCode: 200,
-          headers: [ 'Content-Type: text/html' ]
+          headers: [ 'Content-Type: text/html' ],
+          body: '<html><body>Foo Bar!</body></html>'
         },
-        body: '<html><body>Foo Bar!</body></html>'
       }
     });
 
     http 'http://www.foo.com', ( err, res, body ) ->
 
       should.not.exist err
+      should.exist res.uri
+      should.exist res.statusCode
+      should.exist res.body
+
       res.uri.should.eql 'http://www.foo.com'
       res.statusCode.should.eql 200
-      body.should.equal '<html><body>Foo Bar!</body></html>'
+      res.body.should.equal '<html><body>Foo Bar!</body></html>'
       done()
 
   it 'should allow cache truncation', (done) ->
