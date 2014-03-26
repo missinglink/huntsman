@@ -1,6 +1,5 @@
 
 Queue = require( '../../lib/Queue' )
-breakdown = require 'breakdown'
 should = require 'should'
 
 describe 'queue', ->
