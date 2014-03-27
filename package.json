@@ -37,7 +37,7 @@
     "cheerio": "~0.11.0"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --recursive --reporter spec --compilers coffee:coffee-script test"
+    "test": "node node_modules/mocha/bin/mocha --recursive --reporter spec --compilers coffee:coffee-script/register test"
   },
   "devDependencies": {
     "mocha": "*",
