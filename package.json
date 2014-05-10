@@ -2,7 +2,7 @@
   "name": "huntsman",
   "preferGlobal": false,
   "private": false,
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Super configurable async web spider",
   "keywords": [
     "spider",
@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "regexemitter": "0.2.3",
-    "superagent": "0.17.0",
+    "superagent": "^0.18.0",
     "async": "0.7.0",
     "cheerio": "0.15.0"
   },
