@@ -10,7 +10,7 @@ describe 'huntsman', ->
 
         spider = huntsman.spider()
 
-        spider.loop = setInterval ( () -> done ), 1
+        spider.loop = setInterval done, 1
         should.exist spider.loop._idleNext
         should.exist spider.loop._idlePrev
         
