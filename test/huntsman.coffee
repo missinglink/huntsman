@@ -1,6 +1,13 @@
 
 huntsman = require( '../../huntsman' );
 should = require 'should'
+semver = require 'semver'
+
+exists = (interval) ->
+    if semver.lt process.version, '0.9.0'
+        return !!interval.ontimeout
+    else
+        return !!interval._idleNext && !!interval._idlePrev
 
 describe 'huntsman', ->
 
@@ -10,11 +17,11 @@ describe 'huntsman', ->
 
         spider = huntsman.spider()
 
-        spider.loop = setInterval done, 1000
-        should.exist spider.loop.ontimeout
+        spider.loop = setInterval ( () -> done ), 1
+        exists( spider.loop ).should.be.ok
         
         spider.on 'exit', ->
-            should.not.exist spider.loop.ontimeout
+            exists( spider.loop ).should.not.be.ok
             done()
 
         spider.stop()

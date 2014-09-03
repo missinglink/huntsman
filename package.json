@@ -34,6 +34,7 @@
     "async": "0.7.0",
     "cheerio": "0.15.0",
     "regexemitter": "0.2.3",
+    "semver": "3.0.1",
     "superagent": "0.18.0"
   },
   "scripts": {
