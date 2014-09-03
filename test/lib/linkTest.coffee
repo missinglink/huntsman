@@ -1,6 +1,5 @@
 
 link = require( '../../lib/link' );
-breakdown = require 'breakdown'
 should = require 'should'
 
 describe 'normaliser', ->
