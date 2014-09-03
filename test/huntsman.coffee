@@ -10,13 +10,11 @@ describe 'huntsman', ->
 
         spider = huntsman.spider()
 
-        spider.loop = setInterval done, 1
-        should.exist spider.loop._idleNext
-        should.exist spider.loop._idlePrev
+        spider.loop = setInterval done, 1000
+        should.exist spider.loop.ontimeout
         
         spider.on 'exit', ->
-            should.not.exist spider.loop._idleNext
-            should.not.exist spider.loop._idlePrev
+            should.not.exist spider.loop.ontimeout
             done()
 
         spider.stop()
