@@ -2,7 +2,7 @@
   "name": "huntsman",
   "preferGlobal": false,
   "private": false,
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Super configurable async web spider",
   "keywords": [
     "spider",
