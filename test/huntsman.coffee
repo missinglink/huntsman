@@ -20,7 +20,7 @@ describe 'huntsman', ->
         spider.loop = setInterval ( () -> done ), 1
         exists( spider.loop ).should.be.ok
         
-        spider.on 'exit', ->
+        spider.on 'HUNTSMAN_EXIT', ->
             exists( spider.loop ).should.not.be.ok
             done()
 
