@@ -203,7 +203,7 @@ The default patterns only target anchor tags which use the http protocol, you ca
 // default patterns
 huntsman.extension( 'recurse', {
   pattern: {
-    search: /a([^>]+)href\s?=\s?['"]([^"'#]+)/gi,
+    search: /<a([^>]+)href\s?=\s?['"]([^"'#]+)/gi,
     refine: /['"]([^"'#]+)$/,
     filter: /^https?:\/\//
   }
